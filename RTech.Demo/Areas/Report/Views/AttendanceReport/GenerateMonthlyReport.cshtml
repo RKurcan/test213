@@ -1,0 +1,164 @@
+﻿@using RTech.Demo.Utilities
+@{
+    ViewBag.Title = "GenerateMonthlyReport";
+    Layout = "~/Views/Shared/_Layout_Reports.cshtml";
+    @model  RTech.Demo.Areas.Report.Controllers.Api.MonthlyAttendanceReportApiController.MonthlyReportVm
+    var fromDate = @RTech.Demo.Utilities.Common.SuitableDate(@RTech.Demo.Utilities.RiddhaSession.FromDate);
+    var toDate = @RTech.Demo.Utilities.Common.SuitableDate(@RTech.Demo.Utilities.RiddhaSession.ToDate);
+
+}
+<div class='html-content'>
+    <div class="form-horizontal">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="box-body table-responsive table-bordered table-condensed table-striped" style="overflow-x:auto;">
+                    <table  class="scrollit table table-condensed table-bordered  no-padding table-hover table-responsive" id="dataTable">
+                        <tbody class="text-center">
+                            <tr class="bg-gray">
+
+                                <td colspan="16">
+                                    <strong class="CompanyName text-info text-bold text-xlarge"></strong>
+                                    <br />
+                                    <strong>@T("Contact") : <span class="companyPhone"></span>, &nbsp; <span class="CompanyEmail"></span></strong>
+                                    <br />
+                                    <strong id="monthlyAttendanceReportTitle"> @T("Monthly Attendance Reports from ") @fromDate to @toDate</strong>
+                                </td>
+                            </tr>
+
+
+                            <tr class="bg-gray">
+                                <th>@T("Date")</th>
+                                <th>@T("Day")</th>
+                                <th colspan="3">@T("PlannedTime")</th>
+                                <th id="actualColspan" colspan="5">@T("ActualTime")</th>
+                                <th> @T("OT")</th>
+                                <th colspan="2">@T("Late")</th>
+                                <th colspan="2">@T("Early")</th>
+                                <th>@T("Remark")</th>
+                            </tr>
+                            <tr class="bg-gray">
+                                <th></th>
+                                <th></th>
+                                <th>@T("In")</th>
+                                <th>@T("Out")</th>
+                                <th>@T("WorkTime")</th>
+                                <th>@T("In")</th>
+                                <th>@T("Out")</th>
+                                <th>@T("BreakOut")</th>
+                                <th>@T("BreakIn")</th>
+                                <th>@T("Actual")</th>
+                                <th></th>
+                                <th>@T("In")</th>
+                                <th>@T("Out")</th>
+                                <th>@T("In")</th>
+                                <th>@T("Out")</th>
+                                <th>@T("")</th>
+                            </tr>
+                            @if (Model.Details != null)
+                            {
+                                foreach (var detail in Model.Details)
+                                {
+                                    if (detail.UnitLevelHierarchies != null)
+                                    {
+                                        foreach (var unit in detail.UnitLevelHierarchies)
+                                        {
+                                            <tr class="bg-gray">
+                                                <th colspan="16" id="desGroupColspan">@unit.UnitType   : @unit.Name</th>
+                                            </tr>
+                                        }
+                                    }
+                                    foreach (var item in detail.MOnthWiseEmployeeGroupReportVm)
+                                    {
+                                        <tr class="bg-gray">
+                                            <th colspan="4" id="desGroupColspan">Designation   : @item.DesignationName</th>
+                                            <th colspan="4" id="empGroupColspan">Employee   :  @item.EmployeeName</th>
+                                            <th colspan="8"></th>
+                                        </tr>
+
+
+                                        foreach (var data in item.monthlyWiseReports)
+                                        {
+                                            if (data.Remark == "Present" || data.Remark == "Misc" || data.Remark == "Absent")
+                                            {
+                                                <tr>
+                                                    <td>@RTech.Demo.Utilities.Common.SuitableDate(data.WorkDate)</td>
+                                                    <td>@data.DayName.Substring(0, 3)</td>
+                                                    <td>@RTech.Demo.Utilities.Common.SuitableNumber(data.PlannedTimeIn)</td>
+                                                    <td>@RTech.Demo.Utilities.Common.SuitableNumber(data.PlannedTimeOut)</td>
+                                                    <td>@RTech.Demo.Utilities.Common.SuitableNumber(data.Standard)</td>
+                                                    <td>@RTech.Demo.Utilities.Common.SuitableNumber(data.ActualTimeIn)</td>
+                                                    <td>@RTech.Demo.Utilities.Common.SuitableNumber(data.ActualTimeOut)</td>
+                                                    <td>@RTech.Demo.Utilities.Common.SuitableNumber(data.ActualLunchOut)</td>
+                                                    <td>@RTech.Demo.Utilities.Common.SuitableNumber(data.ActualLunchIn)</td>
+                                                    <td>@RTech.Demo.Utilities.Common.SuitableNumber(data.Actual)</td>
+                                                    <td>@RTech.Demo.Utilities.Common.SuitableNumber(data.Ot)</td>
+                                                    <td>@RTech.Demo.Utilities.Common.SuitableNumber(data.LateIn)</td>
+                                                    <td>@RTech.Demo.Utilities.Common.SuitableNumber(data.LateOut)</td>
+                                                    <td>@RTech.Demo.Utilities.Common.SuitableNumber(data.EarlyIn)</td>
+                                                    <td>@RTech.Demo.Utilities.Common.SuitableNumber(data.EarlyOut)</td>
+                                                    <td>@data.Remark</td>
+                                                </tr>
+                                            }
+                                            else
+                                            {
+
+                                                <tr class="bg-warning">
+                                                    <td>@RTech.Demo.Utilities.Common.SuitableDate(data.WorkDate)</td>
+                                                    <td>@data.DayName.Substring(0, 3)</td>
+
+                                                    <td colspan="15" class=" text-center text-bold">@data.Remark</td>
+                                                </tr>
+                                            }
+
+                                        }
+                                        <tr>
+                                            <td colspan="10"><b>@T("Summary")</b></td>
+                                            <td class="text-bold">
+
+                                                @item.TotalOt
+
+                                            </td>
+                                            <td class="text-bold">
+
+                                                @item.TotalLateIn
+
+                                            </td>
+                                            <td class="text-bold">
+                                                @item.TotalLateOut
+                                            </td>
+                                            <td class="text-bold">
+
+                                                @item.TotalEarlyIn
+                                            </td>
+                                            <td class="text-bold">
+
+                                                @item.TotalEarlyOut
+
+                                            </td>
+                                            <td></td>
+                                        </tr>
+                                        <tr class="page-break">
+                                            <td colspan="16"></td>
+                                        </tr>
+                                    }
+                                }
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts{
+    <script type="text/javascript">
+
+        document.getElementsByClassName('CompanyName')[0].innerHTML = localStorage.companyName;
+        document.getElementsByClassName('CompanyEmail')[0].innerHTML = localStorage.companyEmail;
+        document.getElementsByClassName('companyPhone')[0].innerHTML = localStorage.companyPhone;
+
+    </script>
+
+}
+

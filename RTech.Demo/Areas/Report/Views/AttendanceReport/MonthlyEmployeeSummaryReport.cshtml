@@ -1,0 +1,127 @@
+﻿
+@{
+    ViewBag.Title = "MonthlyEmployeeSummaryReport";
+    Layout = "~/Views/Shared/_Layout_Reports.cshtml";
+    @model  RTech.Demo.Areas.Report.Controllers.Api.MonthlyEmployeeSummaryReportApiController.SummaryMonthlyList
+    var fromDate = @RTech.Demo.Utilities.Common.SuitableDate(@RTech.Demo.Utilities.RiddhaSession.FromDate);
+    var toDate = @RTech.Demo.Utilities.Common.SuitableDate(@RTech.Demo.Utilities.RiddhaSession.ToDate);
+}
+
+
+<div class='html-content'>
+    <div class="form-horizontal">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="box-body table-responsive table-bordered table-condensed table-striped" style="overflow-x:auto;">
+                    <table id="dataTable" class="scrollit table table-condensed table-bordered  no-padding table-hover table-responsive">
+
+                        <tbody class="text-center">
+                            <tr class="bg-gray">
+                                @*<td colspan="2">
+                                        <img class="companyImage" src="" width="100" height="100" />
+                                    </td>*@
+                                <td colspan="23">
+                                    <strong class="companyName"></strong>
+                                    <br />
+                                    <strong>@T("Contact") <span class="companyPhone"></span>, &nbsp; <span class="companyEmail"></span></strong>
+                                    <br />
+                                    <strong><span id="ReportTitle">Employee Summary Report Day Wise from @fromDate to @toDate</span></strong>
+                                </td>
+                            </tr>
+
+
+
+                            <tr class="bg-gray">
+                                <th>@T("Code")</th>
+                                <th>@T("Designation")</th>
+                                <th>@T("Name")</th>
+                                <th>@T("Unit")</th>
+                                <th>@T("TotalDays")</th>
+                                <th>@T("DutyDays")</th>
+                                <th>@T("WeekendDays")</th>
+                                <th>@T("HolidayDays")</th>
+                                <th>@T("PresentDays")</th>
+                                <th>@T("PresentOnHoliday")</th>
+                                <th>@T("PresentOnDayOff")</th>
+                                <th>
+                                    @T("AbsentDays")
+                                </th>
+                                <th>@T("MiscDays")</th>
+                                <th>@T("LeaveDays")</th>
+                                <th>@T("WorkedHours")</th>
+                                <th>@T("OTHours")</th>
+                                <th>@T("LateIn")</th>
+                                <th>@T("LateOut")</th>
+                                <th>@T("EarlyIn")</th>
+                                <th>@T("EarlyOut")</th>
+                                <th>@T("OfficeVisit")</th>
+                                <th>@T("Kaj")</th>
+                                <th>@T("Remarks")</th>
+
+                            </tr>
+
+                            @foreach (var dataMaster in Model.Details)
+                            {
+                                if (dataMaster.UnitLevelHierarchies != null)
+                                {
+                                    foreach (var unit in dataMaster.UnitLevelHierarchies)
+                                    {
+                                        <tr class="bg-gray">
+                                            <th colspan="23" id="desGroupColspan">@unit.UnitType   : @unit.Name</th>
+
+                                        </tr>
+                                    }
+                                }
+                                foreach (var item in dataMaster.Details)
+                                {
+
+                                    <tr>
+                                        <td>@item.EmployeeCode</td>
+                                        <td>@item.DesignationName</td>
+                                        <td>@item.EmployeeName</td>
+                                        <td>@item.SectionName</td>
+                                        <td>@item.TotalDays</td>
+                                        <td>@item.DutyDay</td>
+                                        <td>@item.Weekend</td>
+                                        <td>@item.Holiday</td>
+                                        <td>@item.Present</td>
+                                        <td>@item.PresentInHoliday</td>
+                                        <td>@item.PresentInDayOff</td>
+                                        <td>@item.Absent</td>
+                                        <td>@item.Misc</td>
+                                        <td>@item.Leave</td>
+                                        <td>@item.Worked</td>
+                                        <td>@item.Ot</td>
+                                        <td>@item.LateIn</td>
+                                        <td>@item.LateOut</td>
+                                        <td>@item.EarlyIn</td>
+                                        <td>@item.EarlyOut</td>
+                                        <td>@item.OfficeOut</td>
+                                        <td>@item.KajOut</td>
+                                        <td>@item.Remarks</td>
+
+                                    </tr>
+                                }
+
+
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+@section Scripts{
+    <script type="text/javascript">
+
+        document.getElementsByClassName('companyName')[0].innerHTML = localStorage.companyName;
+        document.getElementsByClassName('companyEmail')[0].innerHTML = localStorage.companyEmail;
+        document.getElementsByClassName('companyPhone')[0].innerHTML = localStorage.companyPhone;
+        document.getElementsByClassName('companyImage')[0].innerHTML = localStorage.companyImage;
+
+    </script>
+
+}

@@ -1,0 +1,225 @@
+﻿<!DOCTYPE html>
+
+<html>
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title> Ehajiri - Hamro-Hajiri - eAttendance - Zkteco Hajiri - Online Human Resource Management software with real time attendance of Nepal.</title>
+    <!-- Tell the browser to be responsive to screen width -->
+    <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+    <!-- Bootstrap 3.3.6 -->
+    <link rel="stylesheet" href="/bootstrap/css/bootstrap.min.css">
+    <link href="~/plugins/datepicker/datepicker3.css" rel="stylesheet" />
+    <link href="~/Content/nepali.datepicker.v2.2.min.css" rel="stylesheet" />
+    <!-- Font Awesome -->
+    @*<link href="/fonts/font-awesome.min.css" rel="stylesheet" />*@
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css">
+    <!-- jvectormap -->
+    <link rel="stylesheet" href="/plugins/jvectormap/jquery-jvectormap-1.2.2.css">
+    <!-- Theme style -->
+    <link rel="stylesheet" href="/dist/css/AdminLTE.min.css">
+    <!-- AdminLTE Skins. Choose a skin from the css/skins
+         folder instead of downloading all of them to reduce the load. -->
+    <link rel="stylesheet" href="/dist/css/skins/_all-skins.min.css">
+
+    <link href="~/Content/page.css" rel="stylesheet" />
+
+    <![endif]-->
+    <link href="~/Content/Site.css" rel="stylesheet" />
+    <style>
+
+        .skin-green-light .main-header .navbar {
+            background-color: #43a1c1;
+        }
+
+        .skin-green-light .main-header .logo {
+            background-color: #43a1c1;
+        }
+
+        .text-green {
+            color: #1e80b2 !important;
+        }
+
+        .text-success {
+            color: #1e80b2 !important;
+        }
+
+        .bg-green, .callout.callout-success, .alert-success, .label-success, .modal-success .modal-body {
+            background-color: #1e80b2 !important;
+        }
+
+        .box.box-success {
+            border-top-color: #1e80b2 !important;
+        }
+
+        .k-grouping-header, .k-header, .k-toolbar, .k-treemap-tile, html .km-pane-wrapper .k-header {
+            background-color: #1e80b2;
+        }
+
+        .btn-success {
+            background-color: #1e80b2 !important;
+        }
+
+            .btn-success:hover, .btn-success:focus, .btn-success.focus, .btn-success:active, .btn-success.active, .open > .dropdown-toggle.btn-success {
+                color: #fff;
+                background-color: #1e80b2 !important;
+                border-color: #1e80b2 !important;
+            }
+
+        .k-grouping-header .k-group-indicator, .k-pivot-toolbar .k-button {
+            color: #fff;
+            background-color: #1e80b2;
+            border-color: #1e80b2;
+            -webkit-box-shadow: none;
+            box-shadow: none;
+        }
+
+        .k-dialog-titlebar.k-header {
+            background: #1e80b2;
+            color: #fff;
+        }
+
+        #logoId:hover {
+            background-color: #1e80b2;
+        }
+    </style>
+</head>
+<body id="layout-body" class="skin-blue-light">
+    <div id="partial-render">
+        <div class="container-fluid">
+            <div class="card" style="height: 100rem;">
+
+                <div class="btn-group btn-group-sm">
+                    <button type="button" class="btn btn-default " data-bind="click:Print"><i class="fa fa-print text-green">&nbsp;@T("Print")</i></button>
+                    <button type="button" class="btn btn-default " @*id="btnExport"*@ data-bind="click:CreatePDFfromHTML"><i class="fa fa-file-pdf-o text-green">&nbsp;@T("PDF")</i></button>
+
+                    <button id="btnExport" type="button" class="btn btn-default " data-bind="click:ExportToExcel"><i class="fa fa-pencil text-blue">&nbsp; Excel</i></button>
+
+                </div>
+                <div class="card-body">
+                    @RenderBody()
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="/plugins/jQuery/jQuery-2.2.0.min.js"></script>
+    <script src="~/Scripts/knockout-3.4.2.js"></script>
+    <script src="/Scripts/koGrid-2.1.1.js"></script>
+    <script src="~/Scripts/App/Globals/Riddha.Globals.ko.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.22/pdfmake.min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/0.4.1/html2canvas.min.js"></script>
+
+    <script type="text/javascript">
+        $("body").on("click", "#btnExport", function () {
+            alert("hello");
+            html2canvas($('#dataTable')[0], {
+                onrendered: function (canvas) {
+                    var data = canvas.toDataURL();
+                    var docDefinition = {
+                        content: [{
+                            image: data,
+                            width: 500
+                        }]
+                    };
+                    pdfMake.createPdf(docDefinition).download("Reports.pdf");
+                }
+            });
+        });
+    </script>
+
+    <script type="text/javascript">
+
+        function exportData() {
+
+
+            self.ExportToExcel = function () {
+
+                var tab_text = "<table border='2px'>";
+                var textRange; var j = 0;
+                tab = document.getElementById("dataTable"); // id of table
+                var headerRowCount = $("#" + "dataTable" + " thead tr").length;
+                for (j = 0; j < tab.rows.length; j++) {
+                    if (j < headerRowCount) {
+                        tab_text += "<tr>";
+                    }
+                    else {
+                        tab_text += "<tr>";
+                    }
+                    tab_text = tab_text + tab.rows[j].innerHTML + "</tr>";
+                    //tab_text=tab_text+"</tr>";
+                }
+
+                tab_text = tab_text + "</table>";
+                tab_text = tab_text.replace(/<A[^>]*>|<\/A>/g, "");//remove if u want links in your table
+                tab_text = tab_text.replace(/<img[^>]*>/gi, ""); // remove if u want images in your table
+                tab_text = tab_text.replace(/<input[^>]*>|<\/input>/gi, ""); // reomves input params
+
+                var ua = window.navigator.userAgent;
+                var msie = ua.indexOf("MSIE ");
+
+                if (msie > 0 || !!navigator.userAgent.match(/Trident.*rv\:11\./))      // If Internet Explorer
+                {
+                    txtArea1.document.open("txt/html", "replace");
+                    txtArea1.document.write(tab_text);
+                    txtArea1.document.close();
+                    txtArea1.focus();
+                    sa = txtArea1.document.execCommand("SaveAs", true, "Report.xls");
+                }
+                else                 //other browser not tested on IE 11
+                    sa = window.open('data:application/vnd.ms-excel,' + encodeURIComponent(tab_text));
+
+                return (sa);
+            }
+
+            self.Print = function () {
+
+                $("#dataTable").print({
+                    globalStyles: true,
+                    mediaPrint: false,
+                    stylesheet: null,
+                    noPrintSelector: ".no-print",
+                    iframe: true,
+                    append: null,
+                    prepend: null,
+                    manuallyCopyFormValues: true,
+                    deferred: $.Deferred(),
+                    timeout: 750,
+                    title: null,
+                    doctype: '<!doctype html>'
+
+                });
+            }
+
+            self.CreatePDFfromHTML = function () {
+
+
+                var html_width = $(".html-content").width();
+                var html_height = $(".html-content").height();
+                var top_left_margin = 15;
+                var pdf_width = html_width + (top_left_margin * 2);
+                var pdf_height = (pdf_width * 1.5) + (top_left_margin * 2);
+                var canvas_image_width = html_width;
+                var canvas_image_height = html_height;
+
+                var totalpdfpages = math.ceil(html_height / pdf_height) - 1;
+
+                html2canvas($(".html-content")[0]).then(function (canvas) {
+                    var imgdata = canvas.todataurl("image/jpeg", 1.0);
+                    var pdf = new jspdf('p', 'pt', [pdf_width, pdf_height]);
+                    pdf.addimage(imgdata, 'jpg', top_left_margin, top_left_margin, canvas_image_width, canvas_image_height);
+                    for (var i = 1; i <= totalpdfpages; i++) {
+                        pdf.addpage(pdf_width, pdf_height);
+                        pdf.addimage(imgdata, 'jpg', top_left_margin, -(pdf_height * i) + (top_left_margin * 4), canvas_image_width, canvas_image_height);
+                    }
+                    pdf.save("reports.pdf");
+                });
+            }
+
+        };
+        ko.applyBindings(exportData);
+    </script>
+    @RenderSection("scripts", required: false)
+</body>
+</html>
