@@ -1,0 +1,66 @@
+﻿@using RTech.Demo.Utilities
+@{
+    ViewBag.Title = "GenerateMonthlyReport";
+    Layout = "~/Views/Shared/_Layout_Reports.cshtml";
+    @model  RTech.Demo.Areas.Report.Models.RankWiseAttendanceReport
+    var fromDate = @RTech.Demo.Utilities.Common.SuitableDate(@RTech.Demo.Utilities.RiddhaSession.FromDate);
+    var toDate = @RTech.Demo.Utilities.Common.SuitableDate(@RTech.Demo.Utilities.RiddhaSession.ToDate);
+
+}
+<div class='html-content'>
+    <div class="form-horizontal">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="box-body table-responsive table-bordered table-condensed table-striped" style="overflow-x:auto;">
+                    <table class="scrollit table table-condensed table-bordered table-striped  no-padding table-hover table-responsive" id="dataTable">
+                        <tbody class="text-center">
+                            <tr class="bg-gray">
+
+                                <td colspan="16">
+                                    <strong class="CompanyName text-info text-bold text-xlarge"></strong>
+                                    <br />
+                                    <strong>@T("Contact") : <span class="companyPhone"></span>, &nbsp; <span class="CompanyEmail"></span></strong>
+                                    <br />
+                                    <strong id="monthlyAttendanceReportTitle"> @T("Monthly Rank wise Attendance Reports from ") @fromDate to @toDate</strong>
+                                </td>
+                            </tr>
+
+
+                            <tr class="bg-gray">
+                                <th class="text-center">@T("Designation")</th>
+                                <th class="text-center">@T("Enrolled")</th>
+                                <th class="text-center">@T("Present")</th>
+                                <th class="text-center">@T("LateIn")</th>
+                                <th class="text-center">@T("Absent")</th>
+                                <th class="text-center">@T("Leave")</th>
+                            </tr>
+
+                            @foreach (var item in Model.RankWiseAttendance)
+                            {
+                                <tr>
+                                    <td class="text-left">@item.Designation</td>
+                                    <td clas="text-right">@item.EnrolledCount</td>
+                                    <td clas="text-right">@item.PresentCount</td>
+                                    <td clas="text-right">@item.LateInCount</td>
+                                    <td clas="text-right">@item.AbsentCount</td>
+                                    <td clas="text-right">@item.LeaveCount</td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts{
+    <script type="text/javascript">
+
+        document.getElementsByClassName('CompanyName')[0].innerHTML = localStorage.companyName;
+        document.getElementsByClassName('CompanyEmail')[0].innerHTML = localStorage.companyEmail;
+        document.getElementsByClassName('companyPhone')[0].innerHTML = localStorage.companyPhone;
+
+    </script>
+
+}

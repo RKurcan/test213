@@ -58,7 +58,7 @@ namespace RTech.Demo.Utilities
         }
         public static int ToInt(this object obj)
         {
-            if (obj==null)
+            if (obj == null)
             {
                 return 0;
             }
@@ -96,7 +96,7 @@ namespace RTech.Demo.Utilities
                 return 0;
             }
         }
-        
+
         public static DateTime? ToNullableDatetime(this string value)
         {
             try
@@ -135,7 +135,7 @@ namespace RTech.Demo.Utilities
                 return "";
             }
         }
-        public static string ToFormatedString(this DateTime? value,string errorText="")
+        public static string ToFormatedString(this DateTime? value, string errorText = "")
         {
             try
             {

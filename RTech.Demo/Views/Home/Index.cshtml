@@ -170,9 +170,8 @@
                         </div>
                     </div>
 
-                    <!--<div class="col-lg-3 col-xs-6">-->
-                        <!-- small box -->
-                        <!--<div class="small-box bg-blue">
+                    <div class="col-lg-3 col-xs-6">
+                        <div class="small-box bg-blue">
                             <div class="inner">
                                 <span class="widget-number" data-bind="text:SuitableNumber(DepartmentCount)"></span>
                                 <p>@T("Department")</p>
@@ -184,7 +183,7 @@
                                 @T("MoreInfo")&nbsp;<i class="fa fa-arrow-circle-right"></i>
                             </a>
                         </div>
-                    </div>-->
+                    </div>
 
                     <div class="col-lg-3 col-xs-6">
                         <!-- small box -->
@@ -241,11 +240,10 @@
                 <!--Absent, Leave, visit, and Device-->
                 <div class="col-md-12">
                     @*For Absent Present Designaiton Wise*@
-                    <div class="col-md-6">
+                    <div class="col-md-12">
                         <div class="box ">
                             <div class="box-header">
-                                @*Absent Employees*@
-                                <span>Designation wise Absent Present List</span>
+                                <span>Rank wise attendance report.</span>
 
                             </div>
                             <div class="box-body box-body-dash no-padding" style="height:200px; overflow-y:auto">
@@ -253,20 +251,28 @@
                                     <thead>
                                         <tr>
                                             <th>@T("Designation")</th>
-                                            <th>@T("Absent") <span class="badge pull-right" data-bind="text:SuitableNumber($root.TotalAbsent)"></span></th>
+                                            <th>@T("Enrolled") <span class="badge pull-right" data-bind="text:SuitableNumber($root.TotalEnrolled)"></span></th>
                                             <th>@T("Present") <span class="badge pull-right" data-bind="text:SuitableNumber($root.TotalPresent)"></span></th>
+                                            <th>@T("LateIn") <span class="badge pull-right" data-bind="text:SuitableNumber($root.TotalLateIn)"></span></th>
+                                            <th>@T("Absent") <span class="badge pull-right" data-bind="text:SuitableNumber($root.TotalAbsent)"></span></th>
+                                            <th>@T("Leave") <span class="badge pull-right" data-bind="text:SuitableNumber($root.TotalLeave)"></span></th>
+
                                         </tr>
                                     </thead>
                                     <tbody data-bind="foreach:$root.AbsentPresentDesignationWises">
                                         <tr>
                                             <td data-bind="text:DesginationName"></td>
-                                            <td data-bind="text:AbsentCount"></td>
+                                            <td data-bind="text:EnrolledCount"></td>
                                             <td data-bind="text:PresentCount"></td>
+                                            <td data-bind="text:LateInCount"></td>
+                                            <td data-bind="text:AbsentCount"></td>
+                                            <td data-bind="text:LeaveCount"></td>
+
                                         </tr>
                                     </tbody>
                                     <tfoot>
                                         <tr>
-                                            <td class="text-center" colspan="2" data-bind="visible:$root.AbsentPresentDesignationWises.length==0">
+                                            <td class="text-center" colspan="5" data-bind="visible:$root.AbsentPresentDesignationWises.length==0">
                                                 @T("NoRecordFound")
                                             </td>
                                         </tr>

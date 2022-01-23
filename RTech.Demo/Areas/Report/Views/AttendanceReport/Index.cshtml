@@ -206,7 +206,7 @@
                                 <div class="form-group col-lg-4" data-bind="visible:$root.ReportId()==10 || $root.ReportId()==16 || $root.ReportId()==43" style="display:none;">
                                     <p><input type="checkbox" data-bind="checked:OTV2"> &nbsp; @T("Ot V2")</p>
                                 </div>
-                                <div class="form-group col-lg-4">
+                                <div data-bind="visible:$root.ReportId()!=59" class="form-group col-lg-4">
                                     <input id="computercode" type="text" class="form-control" placeholder="Computer Code" data-bind="event:{change:$root.SearchEmployeeByCode(document.getElementById('computercode').value)},mask:'number'" />
                                 </div>
                             </div>
@@ -234,7 +234,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="row">
+                        <div class="row" data-bind="visible:$root.ReportId()!=59">
                             <div class="col-lg-5" @*id="departmentColDiv"*@>
                                 <div class="panel panel-success">
                                     <div class="box-header bg-green "> <span data-bind="text:$root.UnitTypeName"></span> <input class="pull-right" type="checkbox" data-bind="checked:CheckAllDepartments,disable:$root.IsSelf" /><input type="text" name="name" data-bind="value:$root.SearchDepartmentText,valueUpdate:'keyup',visible:langVisibility('en')" class="form-control pull-right custom-dep" placeholder="Search" /><input type="text" data-bind="PreetiToUnicode:SearchDepartmentText,visible:langVisibility('ne')" class="form-control  pull-right custom-dep" placeholder="खोज्नुहोस्" /></div>
@@ -243,46 +243,6 @@
                                     </div>
                                 </div>
                             </div>
-                            <!--<div class="col-lg-3" id="directorateColDiv">
-                                <div class="panel panel-success">
-                                    <div class="box-header bg-green ">@T("Directorate") <input class="pull-right" type="checkbox" data-bind="checked:CheckAllDirectorates,disable:$root.IsSelf" /><input type="text" name="name" data-bind="value:$root.SearchDirectorateText,valueUpdate:'keyup',visible:langVisibility('en')" class="form-control pull-right custom-dep" placeholder="Search" /><input type="text" data-bind="PreetiToUnicode:SearchDirectorateText,visible:langVisibility('ne')" class="form-control  pull-right custom-dep" placeholder="खोज्नुहोस्" /></div>
-                                    <div class="panel-body" style="height:250px; overflow-y:auto">
-                                        <div data-bind="template: { name: 'tree-template', data:{data:FilteredDirectorate, type:2}   }"></div>-->
-                            @*<ul data-bind="foreach:FilteredDirectorate" class="list-group list list-group-unbordered">
-                                    <li class="list-group-item">
-                                        <span data-bind="text:Name"></span>   <a class="pull-right"><input type="checkbox" data-bind="checkedValue: Id, checked:Checked,event:{change:$root.GetSectionsForCheckList},disable:$root.IsSelf" /></a>
-                                    </li>
-                                </ul>*@
-                            <!--</div>
-                                </div>
-                            </div>
-                            <div class="col-lg-3" id="sectionColDiv">
-                                <div class="panel panel-success">
-                                    <div class="box-header bg-green ">@T("Section") <input class="pull-right" type="checkbox" data-bind="checked:CheckAllSections,disable:$root.IsSelf" /><input type="text" name="name" data-bind="value:$root.SearchSectionText,valueUpdate:'keyup',visible:langVisibility('en')" class="form-control pull-right custom-dep" placeholder="Search" /><input type="text" data-bind="PreetiToUnicode:SearchSectionText,visible:langVisibility('ne')" class="form-control  pull-right custom-dep" placeholder="खोज्नुहोस्" /></div>
-                                    <div class="panel-body" style="height:250px; overflow-y:auto">
-                                        <div data-bind="template: { name: 'tree-template', data:{data:FilteredSection, type:3}   }"></div>-->
-                            @*<ul data-bind="foreach:FilteredSection" class="list-group list list-group-unbordered">
-                                    <li class="list-group-item">
-                                        <span data-bind="text:Name"></span>   <a class="pull-right"><input type="checkbox" data-bind="checkedValue: Id, checked: Checked,event:{change:$root.GetUnits},disable:$root.IsSelf" /></a>
-                                    </li>
-                                </ul>*@
-                            <!--</div>
-                                </div>
-                            </div>
-
-                            <div class="col-lg-3" id="unitColDiv">
-                                <div class="panel panel-success">
-                                    <div class="box-header bg-green ">@T("Unit") <input class="pull-right" type="checkbox" data-bind="checked:CheckAllUnits,disable:$root.IsSelf" /><input type="text" name="name" data-bind="value:$root.SearchUnitText,valueUpdate:'keyup',visible:langVisibility('en')" class="form-control pull-right custom-dep" placeholder="Search" /><input type="text" data-bind="PreetiToUnicode:SearchUnitText,visible:langVisibility('ne')" class="form-control  pull-right custom-dep" placeholder="खोज्नुहोस्" /></div>
-                                    <div class="panel-body" style="height:250px; overflow-y:auto">
-                                        <div data-bind="template: { name: 'tree-template', data:{data:FilteredUnits, type:4}}"></div>-->
-                            @*<ul data-bind="foreach:FilteredUnits" class="list-group list list-group-unbordered">
-                                    <li class="list-group-item">
-                                        <span data-bind="text:Name"></span>   <a class="pull-right"><input type="checkbox" data-bind="checkedValue: Id, checked:$parent.CheckedUnits,event:{change:$root.GetEmployee},disable:$root.IsSelf" /></a>
-                                    </li>
-                                </ul>*@
-                            <!--</div>
-                                </div>
-                            </div>-->
                             <div class="col-lg-7">
 
                                 <div class="panel panel-success">
@@ -386,6 +346,7 @@
                             <input type="button" data-bind="kendoWindowGrid:$root.KendoGridOptionsForDailyOfficeVisit('@T("DailyOfficeVisitReport")'),visible:$root.ReportId()==54" name="Save" class="btn btn-success" value=@T("Generate") />
 
                             @*<input type="button" data-bind="kendoWindowGrid:$root.KendoGridOptionsForMonthlyMultiPunch('@T("MultiPunchReport")'),visible:$root.ReportId()==55" name="Save" class="btn btn-success" value=@T("Generate") />*@
+                            <input type="button" data-bind="click:GenerateRankWiseMonthlyAttendanceReport,visible:$root.ReportId()==59" name="Save" class="btn btn-success" value=@T("Generate") />
                             <input type="button" data-bind="click:$root.Reset" name="Reset" value=@T("Reset") class="btn btn-default" />
                             <input type="button" id="close" data-bind="click:$root.CloseModal" value=@T("Back") class="btn btn-default" />
                         </div>
@@ -789,6 +750,7 @@
                                 <a data-toggle="tooltip" title='@T("AttendanceReportDesc")' class="btn btn-app appbtn" data-bind="click:function(){ShowModal(10,'@T("AttendanceDetailReport")')},actionVisibility:'5008'"><i class="fa fa-2x text-info fa-clock-o"></i>@T("Attendance")</a>
                                 <a data-toggle="tooltip" title='@T("EmployeeSummaryReportDesc")' class="btn btn-app appbtn" data-bind="click:function(){ShowModal(16,'@T("EmployeeSummaryReport")')},actionVisibility:'5009'"><i class="fa fa-2x text-warning fa-book"></i>@T("Summary")</a>
                                 <a data-toggle="tooltip" title='@T("MonthlyAttendanceStatistic")' class="btn btn-app appbtn" data-bind="click:function(){ShowModal(13,'@T("MonthlyAttendanceStatistic")')},actionVisibility:'7124'"><i class="fa fa-3x text-danger fa-pie-chart"></i>@T("Statics")</a>
+                                <a data-toggle="tooltip" title='@T("RankWiseAttendanceReport")' class="btn btn-app appbtn" data-bind="click:function(){ShowModal(59,'@T("Rank Wise Attendance Report")')}"><i class="fa fa-2x text-info fa-trophy"></i>@T("Rank Wise")</a>
                                 <a data-toggle="tooltip" title='@T("MultiPunchAttendanceDetailReport")' class="btn btn-app appbtn" data-bind="click:function(){ShowModal(5012,'@T("MultiPunchAttendanceDetailReport")')}"> @*5012*@ <i class="fa fa-2x text-info fa-clock-o"></i>@T("MultiPunch")</a>
                                 <a data-toggle="tooltip" title='@T("MonthlyRosterReport") ' class="btn btn-app appbtn" data-bind="click:function(){ShowMonthlyRosterModal(55,'@T("MonthlyRosterReport")')},actionVisibility:'7178'"><i class="fa fa-2x fa-calendar text-info"></i>@T("Roaster")</a>
                                 <a data-toggle="tooltip" title='@T("MonthlyEarlyInReport") ' class="btn btn-app appbtn" data-bind="click:function(){ShowModal(36,'@T("MonthlyEarlyInReport")')},actionVisibility:'7171'"><i class="fa fa-2x fa-arrow-left text-warning"></i>@T("EarlyIn")</a>

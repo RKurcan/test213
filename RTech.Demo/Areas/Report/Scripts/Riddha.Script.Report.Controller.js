@@ -171,7 +171,7 @@ function attendanceReportController(date, companyName) {
         self.Report(title);
         self.ReportId(id);
         if (id == 16 || id == 10 || id == 21 || id == 22 || id == 36 || id == 37 || id == 38 || id == 39 || id == 40 ||
-            id == 41 || id == 42 || id == 43 || id == 52 || id == 53 || id == 55 || id == 56 || id == 57 || id == 58 || id == 5012) {
+            id == 41 || id == 42 || id == 43 || id == 52 || id == 53 || id == 55 || id == 56 || id == 57 || id == 58 || id == 5012 || id == 59) {
             setDefDate();
             self.VisibleEndDate(true);
         }
@@ -1609,7 +1609,7 @@ function attendanceReportController(date, companyName) {
                 self.Employees(employeeData);
                 self.FilteredEmployee(employeeData)
                 self.IsSelf(result.Data.IsSelf);
-                
+
                 self.UnitTypeName(result.Data.UnitType);
             });
     };
@@ -2627,6 +2627,17 @@ function attendanceReportController(date, companyName) {
             $('.ReportTitle').text("Monthly Manual Punch Report from " + SuitableDate(self.OnDate()) + " To " + SuitableDate(self.EndDate()));
             $("#viewMonthlyManualPunchReport").modal('show');
         })
+    }
+
+    /* Rank Wise Attendance Report Added by Raz  2022/01/23*/
+
+
+    self.GenerateRankWiseMonthlyAttendanceReport = function (title) {
+        var params = {
+            onDate: self.OnDate(),
+            ToDate: self.EndDate(),
+        };
+        self.CallHTMLReport("/Report/AttendanceReport/" + "GenerateRankWiseMonthlyReport", params);
     }
 
 

@@ -169,7 +169,6 @@
     <Folder Include="Areas\Office\Views\Shared\" />
     <Folder Include="Areas\PayRoll\Models\" />
     <Folder Include="Areas\PayRoll\Views\Shared\" />
-    <Folder Include="Areas\Report\Models\" />
     <Folder Include="Areas\Report\Views\DailyEarlyInRpt\" />
     <Folder Include="Areas\Report\Views\DailyEarlyOutRpt\" />
     <Folder Include="Areas\Report\Views\DailyEmployeeAbsentRpt\" />
@@ -440,6 +439,7 @@
     <Compile Include="Areas\Report\Controllers\ReportViewerController.cs" />
     <Compile Include="Areas\Report\Controllers\ResellerDeviceAssignmentReportController.cs" />
     <Compile Include="Areas\Report\Controllers\ResellerReportController.cs" />
+    <Compile Include="Areas\Report\Models\RankWiseAttendanceReportVm.cs" />
     <Compile Include="Areas\Report\ReportAreaRegistration.cs" />
     <Compile Include="Areas\Templates\Controllers\EmailTemplateController.cs" />
     <Compile Include="Areas\Templates\TemplatesAreaRegistration.cs" />
@@ -2912,6 +2912,7 @@
     <Content Include="Areas\Report\Views\AttendanceReport\GenerateMonthlyReport.cshtml" />
     <Content Include="Areas\Report\Views\AttendanceReport\MonthlyEmployeeSummaryReport.cshtml" />
     <Content Include="libman.json" />
+    <Content Include="Areas\Report\Views\AttendanceReport\GenerateRankWiseMonthlyReport.cshtml" />
     <None Include="Properties\PublishProfiles\Educate.pubxml" />
     <None Include="Properties\PublishProfiles\hrmpl.pubxml" />
     <Content Include="public\Files\Assignments\test%281%29.docx" />

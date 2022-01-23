@@ -636,8 +636,7 @@ namespace RTech.Demo.Areas.Employee.Controllers.Api
                                                  {
                                                      Id = c.Id,
                                                      Name = language == "ne" && c.NameNp != null ? c.NameNp : c.ShiftName
-                                                 }
-                                                   ).ToList();
+                                                 }).ToList();
             return new ServiceResult<List<DropdownViewModel>>()
             {
                 Data = resultLst,

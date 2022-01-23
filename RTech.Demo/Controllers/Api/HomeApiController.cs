@@ -66,7 +66,7 @@ namespace RTech.Demo.Controllers.Api
         {
             int branchId = RiddhaSession.BranchId ?? 0;
             List<AttendanceReportDetailViewModel> reportList = new List<AttendanceReportDetailViewModel>();
-            SDailyEmployeePerformanceReport reportService = new SDailyEmployeePerformanceReport(branchId, RiddhaSession.FYId);
+            SDailyEmployeePerformanceReport reportService = new SDailyEmployeePerformanceReport(branchId, RiddhaSession.FYId, RiddhaSession.Language);
             var DepartmentCount = _departmentServices.List().Data.Count(x => x.BranchId == RiddhaSession.BranchId);
             int[] Emp = Common.GetEmployees().Data.Select(x => x.Id).ToArray();
             var result = reportService.GetAttendanceReportFromSp(System.DateTime.Now);
@@ -676,8 +676,10 @@ namespace RTech.Demo.Controllers.Api
                             DesignationLevel = c.DesignationLevel,
                             DesignationId = c.DesignationId,
                             AbsentCount = reportList.Where(x => x.ActualTimeIn == "00:00" && x.OnLeave == "No" && x.OfficeVisit == "NO" && x.Kaj == "NO" && x.DesignationId == c.DesignationId).Count(),
-                            PresentCount = reportList.Where(x => x.ActualTimeIn != "00:00" && x.DesignationId == c.DesignationId).Count()
-
+                            PresentCount = reportList.Where(x => x.ActualTimeIn != "00:00" && x.DesignationId == c.DesignationId).Count(),
+                            EnrolledCount = reportList.Where(x => x.DesignationId == c.DesignationId).Count(),
+                            LateInCount = reportList.Where(x => x.DesignationId == c.DesignationId && x.LateIn != "00:00" && x.LateIn != "").Count(),
+                            LeaveCount = reportList.Where(x => x.DesignationId == c.DesignationId && x.LeaveName != null).Count(),
                         }).OrderBy(x => x.DesignationLevel).GroupBy(x => x.DesignationId).Select(x => x.FirstOrDefault()).ToList();
 
             return dashData;
@@ -943,6 +945,9 @@ namespace RTech.Demo.Controllers.Api
         public int DesignationId { get; set; }
         public string DesginationName { get; set; }
         public int DesignationLevel { get; set; }
+        public int EnrolledCount { get; set; }
+        public int LateInCount { get; set; }
+        public int LeaveCount { get; set; }
         public int AbsentCount { get; set; }
         public int PresentCount { get; set; }
 
@@ -1033,8 +1038,6 @@ namespace RTech.Demo.Controllers.Api
         public bool IsOnline { get; set; }
     }
 
-
-
     public class CurrentUserAttendanceSummary
     {
         public EMHomeAttendanceInfo AttendanceInfo { get; set; }
@@ -1081,7 +1084,5 @@ namespace RTech.Demo.Controllers.Api
         public string Section { get; set; }
         public string Description { get; set; }
     }
-
-
 
 }

@@ -37,6 +37,9 @@ function userHomeController() {
 
     //For Absent Present Designation Wise
 
+    self.TotalEnrolled = ko.observable(0);
+    self.TotalLateIn = ko.observable(0);
+    self.TotalLeave = ko.observable(0);
     self.TotalAbsent = ko.observable(0);
     self.TotalPresent = ko.observable(0);
     self.AbsentPresentDesignationWises = ko.observableArray([]);
@@ -50,11 +53,12 @@ function userHomeController() {
     };
 
 
+
+
     function getAttendanceInfo() {
         Riddha.ajax.get(url + "/GetAttendanceInfo")
             .done(function (result) {
                 self.AttendanceInfo(new AttendanceInfoModel(result.Data));
-
                 //EmpList
                 self.dashBoardDivData(result.Data.EmpList);
                 //Devices
@@ -79,14 +83,23 @@ function userHomeController() {
 
         var totalAbsent = 0;
         var totalPresent = 0;
+        var totalEnrolled = 0;
+        var totalLateIn = 0;
+        var totalLeave = 0;
 
         ko.utils.arrayForEach(self.AbsentPresentDesignationWises(), function (data) {
             totalAbsent += parseFloat(data.AbsentCount());
             totalPresent += parseFloat(data.PresentCount());
+            totalEnrolled += parseFloat(data.EnrolledCount());
+            totalLateIn += parseFloat(data.LateInCount());
+            totalLeave += parseFloat(data.LeaveCount());
 
         });
         self.TotalAbsent(totalAbsent);
         self.TotalPresent(totalPresent);
+        self.TotalEnrolled(totalEnrolled);
+        self.TotalLateIn(totalLateIn);
+        self.TotalLeave(totalLeave);
     }
 
 

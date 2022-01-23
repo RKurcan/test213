@@ -5,6 +5,8 @@ using Riddhasoft.OfficeSetup.Entities;
 using Riddhasoft.OfficeSetup.Services;
 using Riddhasoft.Report.ReportViewModel;
 using RTech.Demo.Areas.Report.Controllers.Api;
+using RTech.Demo.Areas.Report.Models;
+using RTech.Demo.Extension;
 using RTech.Demo.Utilities;
 using System;
 using System.Collections.Generic;
@@ -109,6 +111,34 @@ namespace RTech.Demo.Areas.Report.Controllers
             return View(monthlyReport);
 
         }
+
+        public ActionResult GenerateRankWiseMonthlyReport(KendoReportViewModel arg)
+        {
+            RiddhaSession.FromDate = arg.OnDate;
+            RiddhaSession.ToDate = arg.ToDate;
+            SMonthlyWiseReport reportService = new SMonthlyWiseReport(RiddhaSession.Language);
+            var result = reportService.GetAttendanceReportFromSp(arg.OnDate.ToDateTime(), arg.ToDate.ToDateTime(), RiddhaSession.BranchId.ToInt(), arg.OTV2).Data;
+            SDesignation designationServices = new SDesignation();
+            var designations = designationServices.List().Data.OrderBy(x => x.DesignationLevel);
+            List<RankWiseAttendanceReportVm> list = new List<RankWiseAttendanceReportVm>();
+            foreach (var item in designations)
+            {
+                RankWiseAttendanceReportVm vm = new RankWiseAttendanceReportVm()
+                {
+                    Designation = item.Name,
+                    AbsentCount = result.Where(x => x.DesignationId == item.Id && x.ActualTimeIn == "00:00" && x.OnLeave == "No" && x.OfficeVisit == "NO" && x.Kaj == "NO").Count(),
+                    EnrolledCount = result.Where(x => x.DesignationId == item.Id).DistinctBy(x => x.EmployeeId).Count(),
+                    LateInCount = result.Where(x => x.DesignationId == item.Id && x.LateIn != "00:00" && x.LateIn != "").Count(),
+                    LeaveCount = result.Where(x => x.DesignationId == item.Id && x.LeaveName != null).Count(),
+                    PresentCount = result.Where(x => x.ActualTimeIn != "00:00" && x.DesignationId == item.Id).Count(),
+                };
+                list.Add(vm);
+            }
+            RankWiseAttendanceReport resultList = new RankWiseAttendanceReport();
+            resultList.RankWiseAttendance = list;
+            return View(resultList);
+        }
+
         public List<UnitLevelHierarchy> GetUnitLevelHierarchies(int ParentunitId, int unitId)
         {
 

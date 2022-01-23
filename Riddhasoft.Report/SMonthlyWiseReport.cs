@@ -118,10 +118,11 @@ namespace Riddhasoft.HumanResource.Management.Report
 
         public ServiceResult<List<MonthlyWiseReport>> GetAttendanceReportFromSp(DateTime FromDate, DateTime ToDate, int branchId, bool OTV2 = false, string branches = "")
         {
-            string emp = string.Join(",", FilteredEmployeeIDs);
+            string emp = "";
             var result = db.SP_GET_ATTENDACE_REPORT(FromDate, ToDate, branchId, currentLanguage, emp, branches);
-            if (FilteredEmployeeIDs.Length > 0)
+            if (FilteredEmployeeIDs != null)
             {
+                emp = string.Join(",", FilteredEmployeeIDs);
                 result = (from c in result
                           join d in FilteredEmployeeIDs
                           on c.EmployeeId equals d
@@ -175,6 +176,7 @@ namespace Riddhasoft.HumanResource.Management.Report
                            LeaveDescription = c.LeaveDescription,
                            DesignationName = c.DesignationName,
                            DesignationLevel = c.DesignationLevel,
+                           DesignationId = c.DesignationId,
                            SectionId = c.SectionId
                        }).ToList();
 

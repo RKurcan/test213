@@ -133,4 +133,7 @@ function AbsentPresentDesignationWiseModel(item) {
     self.DesginationName = ko.observable(item.DesginationName || '');
     self.AbsentCount = ko.observable(item.AbsentCount || 0);
     self.PresentCount = ko.observable(item.PresentCount || 0);
+    self.EnrolledCount = ko.observable(item.EnrolledCount || 0);
+    self.LateInCount = ko.observable(item.LateInCount || 0);
+    self.LeaveCount = ko.observable(item.LeaveCount || 0);
 }
